@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Gestion des rôles</title>
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+  <%- include('../header') %>
+
+  <div class="container">
+    <h1>Gestion des rôles</h1>
+    
+    <!-- Formulaire de création de rôle -->
+    <h2>Créer un nouveau rôle</h2>
+    <form action="/role/create" method="POST">
+      <input type="text" name="name" placeholder="Nom du rôle" required>
+      <input type="text" name="description" placeholder="Description" required>
+      <button type="submit">Créer</button>
+    </form>
+
+    <!-- Liste des rôles -->
+    <h2>Liste des rôles</h2>
+    <ul>
+      <% roles.forEach(role => { %>
+        <li>
+          <%= role.name %> - <%= role.description %>
+          <form action="/role/delete" method="POST" style="display: inline;">
+            <input type="hidden" name="roleId" value="<%= role._id %>">
+            <button type="submit">Supprimer</button>
+          </form>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+</body>
+</html>

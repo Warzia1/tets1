@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Supprimer le compte</title>
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+  <%- include('layout') %>
+  <div class="container flex">
+    <h1>Supprimer le compte</h1>
+    <form action="/delete" method="POST">
+      <p>Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.</p>
+      
+      <button type="submit">Supprimer le compte</button>
+    </form>
+  </div>
+</body>
+</html>

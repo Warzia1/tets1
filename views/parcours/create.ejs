@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Créer un parcours</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <style>
+        /* Add some styling to the selected options */
+        select option:checked {
+            background-color: #c5e1a5;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title is-2"><% if (parcours.nameP1 === '' && parcours.nameP2 === '') { %>Créer un parcours<% } else { %>Modifier un parcours<% } %></h1>
+    <% if (error) { %>
+        <p class="errorMsg block"><%= error %></p>
+    <% } %>
+    <br>
+    <form method="post" action="<% if (parcours.nameP1 === '' && parcours.nameP2 === '') { %>/parcours/create<% } else { %>/parcours/modify<% } %>">
+        <div class="columns">
+            <div class="column mx-2" id="parcours1">
+                <label class="label" for="nameP1">Nom du parcours 1 :</label>
+                <input class="input block" type="text" name="nameP1" required value="<%= parcours && parcours.nameP1 ? parcours.nameP1 : '' %>">
+
+            
+                <div class="columns">
+                    <div class="column is-5  mr-4">
+                        <!-- Search bar for UE P1 selection -->
+                        <label class="label" for="ueListP1">Liste des UE :</label>
+                        <input class="input block" type="text" id="searchUEP1" placeholder="Rechercher une UE">
+                        
+                        <!-- Select for UE P1 -->
+                        <div class="select is-multiple">
+                            <select id="ueP1" name="ueListP1" style="width: 21.3rem;" multiple>
+                                <% ues.forEach((ue) => { %>
+                                    <% if (parcours && parcours.ueP1 && parcours.ueP1.includes(ue._id.toString())) { %>
+                                    
+                                    <% } else { %>
+                                        <option value="<%= ue._id %>"><%= ue.name %></option>
+                                    <% } %>
+                                <% }); %>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="column">
+                        <label class="label" style="margin-top: 4.25rem;" for="ueP1">UE du parcours :</label>
+                        <!-- Selected UE for P1 -->
+                        <div class="select is-multiple">
+                            <select id="selectedUEP1" name="ueP1" style="width: 21.3rem;" multiple <%= parcours && parcours.nameP1 ? '' : 'required' %>>
+                                <% if (parcours && parcours.ueP1) { %>
+                                    <% ues.forEach((ue) => { %>
+                                        <% if (parcours.ueP1.includes(ue._id.toString())) { %>
+                                            <option value="<%= ue._id %>"><%= ue.name %></option>
+                                        <% } %>
+                                    <% }); %>
+                                <% } %>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            
+                        
+            </div>
+
+            <div class="column mx-2" id="parcours2">
+                <label class="label" for="nameP2">Nom du parcours 2 :</label>
+                <input class="input block" type="text" name="nameP2" required value="<%= parcours && parcours.nameP2 ? parcours.nameP2 : '' %>">
+
+            
+                
+                <div class="columns">
+                    <div class="column is-5 mr-4">
+                        <!-- Search bar for UE P2 selection -->
+                        <label class="label" for="ueListP2">Liste des UE :</label>
+                        <input class="input block" type="text" id="searchUEP2" placeholder="Rechercher une UE">
+                        
+                        <!-- Select for UE P2 -->
+                        <div class="select is-multiple">
+                            <select id="ueP2" name="ueListP2" style="width: 21.3rem;" multiple>
+                                <% ues.forEach((ue) => { %>
+                                    <% if (parcours && parcours.ueP2 && parcours.ueP2.includes(ue._id.toString())) { %>
+                                    
+                                    <% } else { %>
+                                        <option value="<%= ue._id %>"><%= ue.name %></option>
+                                    <% } %>
+                                <% }); %>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="column">
+                        <label class="label" style="margin-top: 4.25rem;" for="ueP2">UE du parcours :</label>
+                        <!-- Selected UE for P2 -->
+                        <div class="select is-multiple">
+                            <select id="selectedUEP2" name="ueP2" style="width: 21.3rem;" multiple <%= parcours && parcours.nameP2 ? '' : 'required' %>>
+                                <% if (parcours && parcours.ueP2) { %>
+                                    <% ues.forEach((ue) => { %>
+                                        <% if (parcours.ueP2.includes(ue._id.toString())) { %>
+                                            <option value="<%= ue._id %>"><%= ue.name %></option>
+                                        <% } %>
+                                    <% }); %>
+                                <% } %>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    
+
+        <!-- Submit button -->
+        <input class="button is-rounded" type="submit" name="action" value="<% if (parcours.nameP1 === '' && parcours.nameP2 === '') { %>Créer le parcours<% } else { %>Modifier le parcours<% } %>">
+        
+        <!-- Delete button -->
+        <% if (parcours.nameP1 !== '' && parcours.nameP2 !== '') { %>
+            <input type="hidden" name="parcoursId" value="<%= parcours._id %>">
+            <input class="button is-rounded is-danger" type="submit" name="action" value="Supprimer" formaction="/parcours/delete" formmethod="POST" class="delete-button">
+        <% } %>
+
+    </form>
+
+    <!-- Script for UE selection -->
+    <script src="/js/formScript.js"></script>
+
+    <script>
+        // Script for UE P1 selection
+        const ueP1Select = document.getElementById('ueP1');
+        const selectedUEP1Select = document.getElementById('selectedUEP1');
+        const searchUEP1Input = document.getElementById('searchUEP1');
+
+        // Initialize the dual selection for UE P1
+        initializeDualSelect(ueP1Select, selectedUEP1Select, searchUEP1Input);
+
+        // Script for UE P2 selection
+        const ueP2Select = document.getElementById('ueP2');
+        const selectedUEP2Select = document.getElementById('selectedUEP2');
+        const searchUEP2Input = document.getElementById('searchUEP2');
+
+        // Initialize the dual selection for UE P2
+        initializeDualSelect(ueP2Select, selectedUEP2Select, searchUEP2Input);
+    </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Modifier un parcours</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+    <h1 class="title is-2">Modifier un parcours</h1>
+    <form method="post" action="/parcours/create">
+        <input class="input block" type="hidden" name="isComingFromModify" value="true">
+    
+        <label class="label" for="parcours">Choisir un parcours :</label>
+        <!-- Ajouter une barre de recherche pour les parcours -->
+        <input class="input block" type="text" id="searchParcours" placeholder="Rechercher un parcours">
+        <div class="select is-multiple block">
+            <select name="parcours" multiple required>
+                <% parcoursList.forEach((parcoursItem) => { %>
+                    <option value="<%= parcoursItem._id %>"><%= parcoursItem.nameP1 %> - <%= parcoursItem.nameP2 %></option>
+                <% }); %>
+            </select>
+        </div>
+        <br>
+        
+        <input class="button block is-rounded" type="submit" value="Valider">
+    </form>
+    
+    <script src="/js/formScript.js"></script>
+    <script>
+    // Ajouter un gestionnaire d'événements pour la recherche de parcours
+    const searchParcoursInput = document.getElementById('searchParcours');
+    const parcoursSelect = document.querySelector('select[name="parcours"]');
+    searchParcoursInput.addEventListener('input', () => {
+        filterSelect(parcoursSelect, searchParcoursInput.value);
+    });
+    </script>
+</body>
+</html>

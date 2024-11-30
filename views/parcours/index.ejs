@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Page</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/bulma.css">
+</head>
+<body class="pb-4">
+    <%- include('../header.ejs') %>
+    <div class="box is-half mx-6 mt-4">
+        <%- include('modify.ejs',{parcoursList}) %>
+    </div>
+    <hr class="mx-5">
+    <div class="box is-half mx-6">
+        <%- include('create.ejs',{ues,parcours,error}) %>
+    </div>
+    
+    
+</body>
+</html>

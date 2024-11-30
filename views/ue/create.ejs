@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><% if (ue.name === '') { %>Créer une UE<% } else { %>Modifier une UE<% } %></title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <style>
+        /* Add some styling to the selected options */
+        select option:checked {
+            background-color: #c5e1a5;
+        }
+    </style>
+</head>
+<body>
+    <h1  class="title is-2"><% if (ue.name === '') { %>Créer une UE<% } else { %>Modifier une UE<% } %></h1>
+    <% if (error) { %>
+        <p class="errorMsg block"><%= error %></p>
+    <% } %>
+    <form method="post" action="<% if (ue.name === '') { %>/ue/create<% } else { %>/ue/modify<% } %>">
+        <div class="columns" style="margin-bottom: 0rem;">
+            <div class="column is-half">
+                <label class="label" for="name">Nom de l'UE :</label>
+                <input class="input" type="text" name="name" required value="<%= ue && ue.name ? ue.name : '' %>" <% if (ue.name) { %>readonly<% } %>>
+                <br>
+            </div>
+
+            <div class="column is-narrow">
+                <label class="label" for="responsible">Responsable :</label>
+                <div class="select">
+                    <select name="responsible" required>
+                        <% users.forEach((user) => { %>
+                            <option value="<%= user._id %>" <% if (ue && ue.responsible && ue.responsible.toString() === user._id.toString()) { %>selected<% } %>><%= user.username %></option>
+                        <% }); %>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="columns">
+            <div class="column is-narrow mr-4">
+                <!-- Multiselect for modules -->
+                <label class="label" for="modules">Liste des modules :</label>
+                <input class="input block" type="text" id="searchModules" placeholder="Rechercher un module" style="width: 21.1rem;">
+                <br>
+                <div class="select is-multiple block mr-4">
+                    <select id="availableModules" style="width: 21.1rem;" multiple>
+                        <% modules.forEach((module) => { %>
+                            <% if (ue && ue.modules && ue.modules.includes(module._id.toString())) { %>
+                                    
+                            <% } else { %>
+                                <option value="<%= module._id %>"><%= module.name %></option>
+                            <% } %>
+                        <% }); %>
+                    </select>
+                </div>
+            </div>
+
+            <div class="column">
+                <!-- Multiselect for modules -->
+                <label class="label" for="modules" style="margin-top: 4.25rem;">Modules de l'UE :</label>
+                <div class="select is-multiple">
+                    <select id="selectedModules" name="modules" style="width: 21.1rem;" multiple <%= ue && ue.name ? '' : 'required' %>>
+                        <!-- Add selected modules here -->
+                        <% if (ue && ue.modules) { %>
+                            <% modules.forEach((module) => { %>
+                                <% if (ue.modules.includes(module._id.toString())) { %>
+                                    <option value="<%= module._id %>"checked><%= module.name %></option>
+                                <% } %>
+                            <% }); %>
+                        <% } %>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <input class="button is-rounded" type="submit" name="action" value="<% if (ue.name === '') { %>Créer l'UE<% } else { %>Modifier l'UE<% } %>">
+        <% if (ue.name) { %>
+            <input type="hidden" name="ueId" value="<%= ue._id %>">
+            <input class="button is-rounded is-danger" type="submit" name="action" value="Supprimer" formaction="/ue/delete" formmethod="POST" class="delete-button">
+        <% } %>
+    </form>
+
+    <script src="/js/formScript.js"></script>
+
+    <script>
+        const availableModulesSelect = document.getElementById('availableModules');
+        const selectedModulesSelect = document.getElementById('selectedModules');
+        const searchModulesInput = document.getElementById('searchModules');
+
+        // Initialisation de la sélection double pour les ues
+        initializeDualSelect(availableModulesSelect, selectedModulesSelect, searchModulesInput);
+    </script>
+</body>
+</html>

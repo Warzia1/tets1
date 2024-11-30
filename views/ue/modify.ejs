@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des UE</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+    <h1 class="title is-2">Liste des UE</h1>
+    <form method="post" action="/ue/create">
+        <input class="input block" type="hidden" name="isComingFromModify" value="true"> <!-- Add the hidden field -->
+    
+        
+        <label class="label" for="ue">Choisir une UE : </label>
+        <!-- Add a search bar for UE -->
+        <input class="input block" type="text" id="searchUE" placeholder="Rechercher une UE">
+        <div class="select is-multiple block">
+            <select name="ue" multiple required>
+                <% ues.forEach((ue) => { %>
+                    <option value="<%= ue._id %>"><%= ue.name %></option>
+                <% }); %>
+            </select>
+        </div>
+        <br>
+
+        <input class="button block is-rounded" type="submit" value="Valider">
+    </form>
+    
+    <script src="/js/formScript.js"></script>
+    <script>
+    // Add event listener for UE search
+    const searchUEInput = document.getElementById('searchUE');
+    const ueSelect = document.querySelector('select[name="ue"]');
+    searchUEInput.addEventListener('input', () => {
+        filterSelect(ueSelect, searchUEInput.value);
+    });
+    </script>
+
+</body>
+</html>

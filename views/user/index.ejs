@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Gestion des utilisateurs</title>
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+  <!-- Include the header -->
+  <%- include('../header') %>
+
+  <div class="container">
+    <h1>Gestion des utilisateurs</h1>
+    
+    <!-- Formulaire de création d'utilisateur -->
+    <h2>Créer un nouvel utilisateur</h2>
+    <form action="/user/create" method="POST">
+      <input type="text" name="username" placeholder="Nom d'utilisateur" required>
+      <input type="password" name="password" placeholder="Mot de passe" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <select name="role" required>
+        <% roles.forEach(role => { %>
+          <option value="<%= role._id %>"><%= role.name %></option>
+        <% }) %>
+      </select>
+      
+      <button type="submit">Créer</button>
+    </form>
+      
+    <!-- Liste des utilisateurs -->
+    <h2>Liste des utilisateurs</h2>
+    <ul>
+      <% users.forEach(user => { %>
+        <li>
+          <%= user.username %> - <%= user.role %> - <%= user.email %>
+
+          <!-- Boutons pour modifier le mot de passe et le nom d'utilisateur -->
+          <form action="/user/editPassword/<%= user._id %>" method="get" style="display: inline;">
+            <button type="submit">Modifier le mot de passe</button>
+          </form>
+
+          <form action="/user/editUsername/<%= user._id %>" method="get" style="display: inline;">
+            <button type="submit">Modifier le nom d'utilisateur</button>
+          </form>
+
+          <!-- Bouton pour supprimer l'utilisateur -->
+          <form action="/user/delete" method="POST" style="display: inline;">
+            <input type="hidden" name="userId" value="<%= user._id %>">
+            <button type="submit">Supprimer</button>
+          </form>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+</body>
+</html>

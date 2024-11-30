@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Créer une maquette</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <style>
+        /* Add some styling to the selected options */
+        select option:checked {
+            background-color: #c5e1a5;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title is-2"><% if (maquette.name === '') { %>Créer une maquette<% } else { %>Modifier une maquette<% } %></h1>
+    <% if (error) { %>
+        <p class="errorMsg block"><%= error %></p>
+    <% } %>
+    <form id="maquetteForm" method="post" action="<% if (maquette.name === '') { %>/maquette/create<% } else { %>/maquette/modify<% } %>">
+        <div class="columns">
+            <div class="column">
+                <!-- Champ pour le nom de la maquette -->
+                <label class="label" for="name">Nom de la maquette :</label>
+                <input class="input block" type="text" name="name" required value="<%= maquette && maquette.name ? maquette.name : '' %>">
+            </div>
+
+            <div class="column">
+                <!-- Champs pour choisir le nombre de semestres -->
+                <label class="label" for="numberOfSemesters">Nombre de semestres :</label>
+                <input class="input block" type="number" name="numberOfSemesters" required min="1" max="10" value="<%= (typeof numberOfSemesters !== 'undefined') ? numberOfSemesters : '6' %>">
+            </div>
+
+            <div class="column">
+                <!-- Champs pour définir le numéro de départ des semestres -->
+                <label class="label for="startingSemesterNumber">Numéro de départ des semestres :</label>
+                <input class="input block" id="statingNumber"type="number" name="startingSemesterNumber" required min="1" max="<%= 11 - (typeof numberOfSemesters !== 'undefined' ? numberOfSemesters : 6) %>" value="<%= (typeof startingSemesterNumber !== 'undefined') ? startingSemesterNumber : '5' %>">
+            </div>
+        </div>
+
+        <!-- Liste des UE -->
+        <label class="label" for="ues">UE disponibles :</label>
+        <ul id="ues" multiple class="sortable-list">
+            <% allUES.forEach((ue) => { %>
+                <!-- Utilisation de data-* pour stocker les valeurs -->
+                <li class="tag is-large mx-4" value="<%= ue._id %>" data-ue-id="<%= ue._id %>" data-ue-name="<%= ue.name %>">
+                    <%= ue.name %>
+                </li>
+            <% }); %>
+        </ul>
+
+        <!-- Liste des parcours -->
+        <label class="label mt-2" for="parcours">Parcours disponibles :</label>
+        <ul id="parcours" multiple class="sortable-list">
+            <% allParcours.forEach((parcours) => { %>
+                <!-- Utilisation de data-* pour stocker les valeurs -->
+                <li class="tag is-large mx-4" value="<%= parcours._id %>" data-parcours-id="<%= parcours._id %>" data-parcours-name="<%= parcours.nameP1 %> - <%= parcours.nameP2 %>">
+                    <%= parcours.nameP1 %> - <%= parcours.nameP2 %>
+                </li>
+            <% }); %>
+        </ul>
+
+            <!-- Zone pour afficher dynamiquement les listes de semestres -->
+        <div id="semestersContainer">
+            <!-- Les listes de semestres seront générées dynamiquement ici -->
+        </div>
+
+        <input id="submitBtn" class="button is-rounded mt-4" type="submit" name="action" value="<% if (maquette.name === '') { %>Créer la maquette<% } else { %>Modifier la maquette<% } %>">
+        <% if (maquette.name) { %>
+            <input type="hidden" name="maquetteId" value="<%= maquette._id %>">
+            <input class="button is-rounded is-danger" type="submit" name="action" value="Supprimer" formaction="/maquette/delete" formmethod="POST" class="delete-button">
+        <% } %>
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            init();
+        });
+
+        const ueSelect = document.getElementById('ues');
+        const parcoursSelect = document.getElementById('parcours');
+        const semestersContainer = document.getElementById('semestersContainer');
+        const numberOfSemestersInput = document.querySelector('input[name="numberOfSemesters"]');
+        const startingSemesterNumberInput = document.querySelector('input[name="startingSemesterNumber"]');
+        let sortableInstances = [];
+
+        numberOfSemestersInput.addEventListener('change', () => {
+            const numberOfSemesters = parseInt(numberOfSemestersInput.value);
+            const maxStartingNumber = 11 - numberOfSemesters;
+            let startingSemesterNumber = parseInt(startingSemesterNumberInput.value);
+
+            if (startingSemesterNumber > maxStartingNumber) {
+                startingSemesterNumber = maxStartingNumber;
+                startingSemesterNumberInput.value = maxStartingNumber;
+            }
+
+            clearSortableInstances();
+            generateSemesterLists();
+        });
+
+        startingSemesterNumberInput.addEventListener('change', () => {
+            clearSortableInstances();
+            generateSemesterLists();
+        });
+
+        function clearSortableInstances() {
+            sortableInstances.forEach(instance => {
+                instance.destroy();
+            });
+            sortableInstances = [];
+        }
+
+        function init() {
+            new Sortable(ueSelect, {
+                multiDrag: true,
+                selectedClass: 'selected',
+                fallbackTolerance: 3,
+                animation: 150,
+                ghostclass: 'green-background-class',
+            });
+
+            new Sortable(parcoursSelect, {
+                multiDrag: true,
+                selectedClass: 'selected',
+                fallbackTolerance: 3,
+                animation: 150,
+                ghostclass: 'green-background-class',
+            });
+
+            generateSemesterLists();
+
+            const maquetteForm = document.getElementById('maquetteForm');
+            maquetteForm.addEventListener('submit', handleSubmit);
+        }
+
+        function generateSemesterLists() {
+            const numberOfSemesters = parseInt(numberOfSemestersInput.value);
+            const startingNumber = parseInt(startingSemesterNumberInput.value);
+
+            semestersContainer.innerHTML = '';
+
+            for (let i = 0; i < numberOfSemesters; i++) {
+                const semesterList = document.createElement('ul');
+                semesterList.setAttribute('style', 'border-style: solid; min-height: 2rem; border-radius: 5px; border-width: 1px; padding: 0.35rem')
+                semesterList.classList.add('sortable-list');
+
+                const sortableInstance = new Sortable(semesterList, {
+                    group: {
+                        name: `semester_${i + startingNumber}`,
+                        put: true,
+                        numero: `${i + startingNumber}`
+                    },
+                    multiDrag: true,
+                    fallbackTolerance: 3,
+                    animation: 150,
+                });
+
+                sortableInstances.push(sortableInstance);
+
+                const label = document.createElement('label');
+                label.setAttribute('class', 'label mt-2')
+                label.textContent = `Semestre ${i + startingNumber} :`;
+
+                semestersContainer.appendChild(label);
+                semestersContainer.appendChild(semesterList);
+            }
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+
+            const semesterContainers = document.getElementById('semestersContainer').querySelectorAll('ul');
+            const semestersData = [];
+
+            Array.from(semesterContainers).forEach((semesterList, index) => {
+                const items = Array.from(semesterList.children);
+
+                const semesterNumero = `${index + parseInt(startingSemesterNumberInput.value)}`;
+                const itemIDs = items.filter(item => item.getAttribute('value')).map(item => item.getAttribute('value'));
+                semestersData.push({ numero: semesterNumero, items: itemIDs });
+            });
+
+            const semestersInput = document.createElement('input');
+            semestersInput.setAttribute('type', 'hidden');
+            semestersInput.setAttribute('name', 'semestersData');
+            semestersInput.setAttribute('value', JSON.stringify(semestersData));
+            event.target.appendChild(semestersInput);
+
+            // Submit the form after adding the semester data
+            event.target.submit();
+        }
+
+        
+    </script>
+</body>
+</html>

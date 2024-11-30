@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des modules </title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+    <h1 class="title is-2">Liste des modules </h1>
+    <form method="post" action="/module/create">
+        <input class="input block" type="hidden" name="isComingFromModify" value="true"> <!-- Add the hidden field -->
+    
+        
+        <label class="label" for="module">Choisir un module :</label>
+        <!-- Add a search bar for modules -->
+        <input class="input block" type="text" id="searchModules" placeholder="Rechercher un module">
+        <div class="select is-multiple block">
+            <select name="module" multiple required>
+                <% modules.forEach((module) => { %>
+                    <option value="<%= module._id %>"><%= module.name %></option>
+                <% }); %>
+            </select>
+        </div>
+        <br>
+
+        <input class="button block is-rounded" type="submit" value="Valider">
+    </form>
+    
+    <script src="/js/formScript.js"></script>
+    <script>
+    // Add event listener for module search
+    const searchModulesInput = document.getElementById('searchModules');
+    const moduleSelect = document.querySelector('select[name="module"]');
+    searchModulesInput.addEventListener('input', () => {
+        filterSelect(moduleSelect, searchModulesInput.value);
+    });
+</script>
+
+</body>
+</html>

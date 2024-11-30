@@ -1,0 +1,122 @@
+/* Media queries pour les différents points de rupture */
+@media screen and (max-width: 767px) {
+    /* Styles pour les écrans de petite taille */
+    /* Ajoutez vos styles spécifiques ici */
+    .container {
+      padding: 10px;
+    }
+  }
+  
+  @media screen and (min-width: 768px) and (max-width: 991px) {
+    /* Styles pour les écrans de taille moyenne */
+    /* Ajoutez vos styles spécifiques ici */
+    .container {
+      padding: 20px;
+    }
+  }
+  
+  @media screen and (min-width: 992px) {
+    /* Styles pour les écrans larges */
+    /* Ajoutez vos styles spécifiques ici */
+    .container {
+      padding: 30px;
+    }
+  }
+  
+  /* Couleurs inspirées de Spotify */
+  :root {
+    --primary-color: #1DB954; /* Couleur principale */
+    --secondary-color: #191414; /* Couleur secondaire */
+    --headerText-color: black; /* Couleur du texte */
+    --headerBackground-color: #FFFFFF; /* Couleur de fond */
+    --headerHover-background-color: #8EB633;  /* Couleur de hover */
+  }
+
+/* Style the navigation bar */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--headerBackground-color); 
+    padding: 10px;
+  }
+  
+  .user {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .user img {
+    width: 30px; /* Adjust the size as needed */
+    margin-right: 10px;
+  }
+  
+  .user .username {
+    color: var(--headerText-color); 
+    font-weight: bold;
+  }
+
+  #logo {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  nav {
+    background-color: var(--headerBackground-color);
+    overflow: hidden;
+    display: flex;
+    font-family: inherit;
+    font-size: 18px;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  li.menu-item {
+    float: left;
+    position: relative;
+  }
+  
+  a {
+    display: block;
+    color: var(--headerText-color); /* Set the text color */
+    text-align: center;
+    text-decoration: none;
+  }
+
+  a.menu-item {
+    padding: 15px 20px;
+  }
+  
+  a.menu-item:hover {
+    background-color: var(--headerHover-background-color); 
+  }
+  
+  ul.submenu {
+    display: none;
+    position: absolute;
+    background-color: var(--headerBackground-color); 
+    border-radius: 0 0 5px 5px;
+    z-index: 1;
+  }
+  
+  li.menu-item:hover ul.submenu {
+    display: block;
+  }
+  
+  ul.submenu li {
+    clear: both;
+  }
+  
+  ul.submenu a {
+    padding: 10px 20px;
+  }
+  
+  ul.submenu a:hover {
+    background-color: var(--headerHover-background-color);
+  }
+  

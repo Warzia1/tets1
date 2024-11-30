@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des maquettes</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+    <h1 class="title is-2">Liste des maquettes</h1>
+    <form method="post" action="/maquette/create">
+        <input class="input block" type="hidden" name="isComingFromModify" value="true"> <!-- Add the hidden field -->
+    
+        
+        <label class="label" for="maquette">Choisir une maquette :</label>
+        <!-- Add a search bar for maquettes -->
+        <input class="input block" type="text" id="searchMaquettes" placeholder="Rechercher une maquette">
+        <div class="select is-multiple block">
+            <select name="maquette" multiple required>
+                <% maquettes.forEach((maquette) => { %>
+                    <option value="<%= maquette._id %>"><%= maquette.name %></option>
+                <% }); %>
+            </select>
+        </div>
+        <br>
+        
+        <input class="button is-rounded" type="submit" value="Valider">
+    </form>
+    
+    <script src="/js/formScript.js"></script>
+    <script>
+    // Add event listener for maquette search
+    const searchMaquettesInput = document.getElementById('searchMaquettes');
+    const maquetteSelect = document.querySelector('select[name="maquette"]');
+    searchMaquettesInput.addEventListener('input', () => {
+        filterSelect(maquetteSelect, searchMaquettesInput.value);
+    });
+    </script>
+
+</body>
+</html>

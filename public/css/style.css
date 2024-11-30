@@ -1,0 +1,322 @@
+/* Media queries pour les différents points de rupture */
+@media screen and (max-width: 767px) {
+    /* Styles pour les écrans de petite taille */
+    /* Ajoutez vos styles spécifiques ici */
+    .container {
+      padding: 10px;
+    }
+  }
+  
+  @media screen and (min-width: 768px) and (max-width: 991px) {
+    /* Styles pour les écrans de taille moyenne */
+    /* Ajoutez vos styles spécifiques ici */
+    .container {
+      padding: 20px;
+    }
+  }
+  
+  @media screen and (min-width: 992px) {
+    /* Styles pour les écrans larges */
+    /* Ajoutez vos styles spécifiques ici */
+    .container {
+      padding: 30px;
+    }
+  }
+  
+  /* Couleurs inspirées de Spotify */
+  :root {
+    --primary-color: #8EB633  ; /* Couleur principale */
+    --secondary-color: #12a546  ; /* Couleur secondaire */
+    --text-color: #121212 ;/* Couleur du texte */
+    --background-color:#f5f6fa ; /* Couleur de fond */
+  }
+  
+  /* Styles généraux */
+  body {
+    margin: 0px;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: Verdana, Geneva, Tahoma, sans-serif
+  }
+
+  h1 {
+    font-size: 40px;
+  }
+
+  label {
+    font-size: 18px;
+  }
+  
+  /*h1, h2, h3 {
+    margin: 0;
+    padding: 0;
+  }*/
+
+  label {
+    margin-right: 5px;
+  }
+
+  /*input[type="text"] {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 3px;
+    border-width: 2px;
+    border-radius: 3px;
+    border-color: var(--primary-color);
+    font-size: 18px;
+  }*/
+
+  input[type="number"], input[type="text"], textarea {
+    border-color: var(--primary-color);
+  }
+
+  /*hr {
+    margin-top: 17px;
+    margin-bottom: 12px;
+    margin-left: 1.5%;
+    margin-right: 1.5%;
+  }*/
+
+  select {
+    font-size: 18px;
+    border-color: var(--primary-color);
+  }
+
+  select[multiple] {
+    min-height: 15rem;
+    min-width: 12rem;
+    border-radius: 5px;
+  }
+
+  /*.parcours {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    margin-top: 7px;
+  }*/
+
+  /*.fonctions {
+    padding-left: 3%;
+    padding-right: 3%;
+  }*/
+
+  .errorMsg {
+    color: red;
+    font-weight: bold;
+  }
+
+  .column.is-narrow.hours {
+    width: 17rem;
+  }
+
+  .tag.is-large {
+    background-color: #8EB633;
+    border-color: transparent;
+  }
+  
+  .selectForm{
+    display: flex;
+    align-items: flex-start;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  /* Exemple de styles spécifiques */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .button:hover {
+    background-color: var(--secondary-color)
+  }
+  
+  /* Add a black background color to the top navigation */
+.topnav {
+  background-color: #333;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+  /* Styles spécifiques pour le layout */
+.header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: row;
+  }
+  
+  .header .user-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+  }
+  
+  .header .username {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--text-color);
+  }
+
+  .menu {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    padding: 10px;
+    background-color: var(--secondary-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    z-index: 1;
+  }
+  
+  .menu a {
+    display: block;
+    padding: 10px;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .menu a:hover {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+  }
+  
+  /* Styles spécifiques pour la page de connexion */
+  .login-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--secondary-color);
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+  .login-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+  }
+  
+  .login-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-form button:hover {
+    background-color: darken(var(--primary-color), 10%);
+  }
+  
+  .login-form .error {
+    color: red;
+    margin-bottom: 10px;
+  }
+  
+  /* Styles spécifiques pour la page d'inscription */
+  .register-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--secondary-color);
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+  .register-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+  }
+  
+  .register-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .register-form button:hover {
+    background-color: darken(var(--primary-color), 10%);
+  }
+  
+  .register-form .error {
+    color: red;
+    margin-bottom: 10px;
+  }
+
+/* ... styles spécifiques ... */
+
+.menu {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    padding: 10px;
+    background-color: var(--secondary-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    z-index: 1;
+    display: none;
+  }
+  
+  .user:hover #menu {
+    display: block;
+  }
+    
+/*#searchModules, #searchUE, #searchParcours {
+  margin-bottom: 11px;
+}*/
+
+#parcours1, #parcours2 {
+  border-style: solid;
+  border-color: var(--text-color);
+  border-width: 1px;
+  border-radius: 10px;
+  background-color: white;
+}
+
+img {
+  max-width: 40px;
+  max-height: 40px;
+}
+
+ul {
+  display :flex ;
+  flex-direction: row;
+}

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Modifier le nom d'utilisateur</title>
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+  <%- include('../header') %>
+  <div class="container flex">
+    <h1>Modifier le nom d'utilisateur pour <%= user.username %></h1>
+    <form action="/user/editUsername/<%= user._id %>" method="POST">
+      <label for="newUsername">Nouveau nom d'utilisateur:</label>
+      <input type="text" id="newUsername" name="newUsername" required>
+
+      <button type="submit">Modifier le nom d'utilisateur</button>
+    </form>
+  </div>
+</body>
+</html>

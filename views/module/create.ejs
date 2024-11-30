@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Créer/Modifier un module</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    
+</head>
+<body>
+    <h1  class="title is-2"><% if (module.name === '') { %>Créer un module<% } else { %>Modifier un module<% } %></h1>
+    <% if (error) { %>
+        <p class="errorMsg block"><%= error %></p>
+    <% } %>
+    <form method="post" action="<% if (module.name === '') { %>/module/create<% } else { %>/module/modify<% } %>">
+        <div class="columns">
+            <div class="column is-half">
+                <label class="label" for="name">Nom du module :</label>
+                <input class="input block" type="text" name="name" required value="<%= module && module.name ? module.name : '' %>" <% if (module && module.name) { %>readonly<% } %>>
+            </div>
+
+            <div class="column is-narrow">
+                <label class="label" for="responsible">Responsable :</label>
+                <div class="select block">
+                    <select name="responsible">
+                        <% users.forEach((user) => { %>
+                            <option value="<%= user._id %>" <% if (module && module.responsible && module.responsible.toString() === user._id.toString()) { %>selected<% } %>><%= user.username %></option>
+                        <% }); %>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="columns">
+            <div class="column is-narrow mr-4">
+                <!-- Multiselect for intervenants -->
+                <label class="label" for="responsible">Liste des intervenants :</label>
+                <input class="input block" type="text" id="searchUsers" placeholder="Rechercher un intervenant" style="width: 21.1rem;">
+                <br>
+                <div class="select is-multiple block mr-4">
+                    <select id="users" style="width: 21.1rem;" multiple>
+                        <% users.forEach((user) => { %>
+                            <% if (module && module.intervenants && module.intervenants.includes(user._id.toString())) { %>
+                            
+                            <% } else { %>
+                                    <option value="<%= user._id %>"><%= user.username %></option>
+                            <% } %>
+                        <% }); %>
+                    </select>
+                </div>
+            </div>
+
+            <div class="column">
+                <label class="label" for="intervenants" style="margin-top: 4.25rem;">Liste des intervenants :</label>
+                <div class="select is-multiple block">
+                    <select id="intervenants" name="intervenants" style="width: 21.1rem;" multiple <%= module && module.name ? '' : 'required' %>>
+                        <% if (module && module.intervenants) { %>
+                            <% users.forEach((user) => { %>
+                                <% if (module.intervenants.includes(user._id.toString())) { %>
+                                    <option value="<%= user._id %>"><%= user.username %></option>
+                                <% } %>
+                            <% }); %>
+                        <% } %>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        
+        <div class="columns">
+            <div class="column is-narrow hours">
+                <label class="label" for="tdHour">Heures TD :</label>
+                <input class="input block" type="number" name="tdHour" required min="0" value="<%= module && module.tdHours ? module.tdHours : '0' %>">
+            </div>
+                
+            <div class="column is-narrow hours">
+                <label class="label" for="tpHour">Heures TP :</label>
+                <input class="input block" type="number" name="tpHour" required min="0" value="<%= module && module.tpHours ? module.tpHours : '0' %>">
+            </div>
+
+            <div class="column is-narrow hours">
+                <label class="label" for="cmHour">Heures CM :</label>
+                <input class="input block" type="number" name="cmHour" required min="0" value="<%= module && module.cmHours ? module.cmHours : '0' %>">
+            </div>
+                
+            <div class="column is-narrow hours">
+                <label class="label" for="ollHours">Heures d'OLL : </label>
+                <input class="input block" type="number" name="ollHours" required min="0" value="<%= module && module.ollHours ? module.ollHours : '0' %>">
+            </div>
+
+            <div class="column is-narrow hours">
+                <label class="label" for="projectHour">Heures de projet :</label>
+                <input class="input block" type="number" name="projectHour" required min="0" value="<%= module && module.projectHours ? module.projectHours : '0' %>">
+            </div>
+
+            <div class="column">
+                <label class="label" for="personalWorkHours">Heures de travail personnel :</label>
+                <input class="input block" type="number" name="personalWorkHours" required min="0" value="<%= module && module.personalWorkHours ? module.personalWorkHours : '0' %>">
+            </div>
+        </div>
+        
+        
+        
+        <label class="label" for="comments">Commentaires :</label>
+        <textarea class="textarea block" name="comments" rows="4" cols="50"><%= module && module.comments ? module.comments : '' %></textarea>
+        
+        
+        <input class="button is-rounded" type="submit" name="action" value="<% if (module.name === '') { %>Créer le module<% } else { %>Modifier le module<% } %>">
+        <% if (module.name !== '') { %>
+            <input type="hidden" name="moduleId" value="<%= module._id %>">
+            <input class="button is-rounded is-danger" type="submit" name="action" value="Supprimer" formaction="/module/delete" formmethod="POST" class="delete-button">
+        <% } %>
+
+    </form>
+
+    <script src="/js/formScript.js"></script>
+
+    <script>
+        const usersSelect = document.getElementById('users');
+        const intervenantsSelect = document.getElementById('intervenants');
+        const searchUsersInput = document.getElementById('searchUsers');
+
+        // Initialisation de la sélection double pour les intervenants
+        initializeDualSelect(usersSelect, intervenantsSelect, searchUsersInput);
+    </script>
+</body>
+</html>
